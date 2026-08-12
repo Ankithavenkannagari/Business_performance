@@ -87,10 +87,11 @@ Click any customer to drill into their individual order history — Order ID, da
 2. Open in Power BI Desktop (free) — data is embedded, no external connections required
 3. Use the top nav (Overview / Sales Performance / Customer & Marketing) to move between pages; click a customer row on page 3 to drill through to order detail
 
+<!--
 ## 🔗 Live Report
 
 *(Recommended: publish to Power BI Service or Power BI Public and link here — a clickable live report is more convincing to reviewers than static screenshots.)*
 
 ---
-
+-->
 *Dataset: sample/synthetic sales data — no real company or customer data used.*
