@@ -17,6 +17,27 @@ This dashboard gives leadership a single view across three connected areas — o
 - Leadership needed **target and YoY context on every number**, not just raw totals — a strong-looking total can hide a miss against plan.
 - No easy way to go from "which customer/order is driving this number" back to the source transaction.
 
+## 🧱 Data Model
+
+Star schema with 6 dimension tables and 6 fact tables, plus row-level security and a dedicated measures table:
+
+**Dimensions:** `dim_date` · `dim_customer` (account manager, credit limit, payment terms) · `dim_product` (brand, category, sub-category, primary supplier) · `dim_geo` (city, region) · `dim_campaign` (channel, budget, start/end date) · `dim_order_flag` (channel code, priority)
+
+**Facts:**
+| Table | Grain | Purpose |
+|---|---|---|
+| `fact_sales` | Order line | Core sales/revenue — line total, discount %, order date |
+| `fact_sales_targets` | Date | Monthly target revenue — drives Sales-to-Target % |
+| `fact_order_fulfillment` | Order | Order → delivery → invoice → payment dates — drives the fulfillment funnel |
+| `fact_campaign_spend` | Campaign × Date | Spend, clicks, impressions — drives marketing ROI views |
+| `fact_promotion_coverage` | Campaign × Product | Which products each campaign covers |
+| `fact_inventory` | Product × Month | Unit-level inventory tracking |
+
+**Supporting tables:** `security` (region-based row-level security by `user_email`) · `_measures` (dedicated table holding standalone DAX measures like `Avg Credit Limit`, kept separate from any physical table — standard practice for measure organization)
+
+<img width="1522" height="768" alt="Data_model" src="https://github.com/user-attachments/assets/59dca3d5-45b1-4140-be94-fbb1688ef619" />
+
+
 ## 📈 Report Pages
 
 ### 1. Business Performance Overview
@@ -55,8 +76,7 @@ Click any customer to drill into their individual order history — Order ID, da
 │   └── (sample/synthetic sales dataset)
 ├── Screenshots/
 │   ├── Overview.png
-│   ├── SalesPerformance.png
-│   └── CustomerMarketing.png
+│   ├── Data_model.png
 ├── Sales_Marketing_Performance_Dashboard.pdf   # static export for viewers without Power BI Desktop
 └── README.md
 ```
